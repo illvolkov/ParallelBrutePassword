@@ -56,15 +56,47 @@
 		046D956628414D8500117101 /* ParallelBrutePassword */ = {
 			isa = PBXGroup;
 			children = (
-				046D956728414D8500117101 /* AppDelegate.swift */,
-				046D956928414D8500117101 /* SceneDelegate.swift */,
-				046D956B28414D8500117101 /* ViewController.swift */,
-				046D956D28414D8500117101 /* Main.storyboard */,
-				046D957028414D8800117101 /* Assets.xcassets */,
-				046D957228414D8800117101 /* LaunchScreen.storyboard */,
-				046D957528414D8800117101 /* Info.plist */,
+				046D957B28414F9F00117101 /* Sources */,
+				046D957D28414FC100117101 /* Resources */,
 			);
 			path = ParallelBrutePassword;
+			sourceTree = "<group>";
+		};
+		046D957B28414F9F00117101 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				046D957C28414FAD00117101 /* App */,
+				046D957E2841500000117101 /* ViewController */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		046D957C28414FAD00117101 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				046D956928414D8500117101 /* SceneDelegate.swift */,
+				046D956728414D8500117101 /* AppDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		046D957D28414FC100117101 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				046D956D28414D8500117101 /* Main.storyboard */,
+				046D957228414D8800117101 /* LaunchScreen.storyboard */,
+				046D957028414D8800117101 /* Assets.xcassets */,
+				046D957528414D8800117101 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		046D957E2841500000117101 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				046D956B28414D8500117101 /* ViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,12 +321,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 34TG2Y4HBL;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ParallelBrutePassword/Info.plist;
+				INFOPLIST_FILE = ParallelBrutePassword/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -317,12 +349,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 34TG2Y4HBL;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ParallelBrutePassword/Info.plist;
+				INFOPLIST_FILE = ParallelBrutePassword/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
