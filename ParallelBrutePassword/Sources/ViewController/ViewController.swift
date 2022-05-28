@@ -24,6 +24,7 @@ class ViewController: UIViewController {
     
     //MARK: - Properties
     
+    //Смена цвета вьюшек в зависимости от цвета супервью
     private var isBlack: Bool = false {
         didSet {
             if isBlack {
@@ -39,10 +40,13 @@ class ViewController: UIViewController {
             }
         }
     }
-    
+    //Флаг говорящий о том что идет взлом или нет
     private var isBreaking = true
+    
+    //Флаг говорящий о том что взломан пароль или нет
     private var isPassCracked = false
     
+    //Флаг конфигурирующий кнопку Crack/Stop
     private var isCrackButton: Bool = true {
         didSet {
             if isCrackButton {
@@ -86,8 +90,10 @@ class ViewController: UIViewController {
     
     @IBAction func changeCrackStopButtonState(_ sender: Any) {
         
+        //Если пароль взломан то взламывать уже нечего
         guard !isPassCracked else { return crackedPassLabel.text = "Password already cracked..." }
         
+        //Если passField пустой то взламывать тоже нечего
         if !(passField.text?.isEmpty ?? false) {
             isCrackButton.toggle()
         } else {
@@ -95,6 +101,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //Сгенерированный пароль отправляется в passField
     @IBAction func pushPassToPassField(_ sender: Any) {
         passField.text = password.generateRandomPass()
         print("Сгенерированный пароль: \(passField.text ?? "")")
@@ -154,6 +161,8 @@ class ViewController: UIViewController {
         
         concurrentQueue.async {
             while password != passwordToUnlock {
+                
+                //Взлом или остановка взлома
                 if self.isBreaking {
                     password = self.passwordGuessing.generateBruteForce(password, fromArray: allowedCharacters)
                 } else {
