@@ -40,13 +40,18 @@ class ViewController: UIViewController {
         }
     }
     
+    private var isBreaking = true
+    private var isPassCracked = false
+    
     private var isCrackButton: Bool = true {
         didSet {
             if isCrackButton {
-                crackStopButton.setTitle("Crack", for: .normal)
+                self.crackStopButton.setTitle("Crack", for: .normal)
+                isBreaking = false
             } else {
                 crackStopButton.setTitle("Stop", for: .normal)
                 bruteForce(passwordToUnlock: passField.text ?? "")
+                isBreaking = true
             }
         }
     }
@@ -80,10 +85,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func changeCrackStopButtonState(_ sender: Any) {
+        
+        guard !isPassCracked else { return crackedPassLabel.text = "Password already cracked..." }
+        
         if !(passField.text?.isEmpty ?? false) {
             isCrackButton.toggle()
         } else {
-            crackedPassLabel.text = "Введите пароль"
+            crackedPassLabel.text = "C'mon, enter password!"
         }
     }
     
@@ -116,30 +124,56 @@ class ViewController: UIViewController {
         crackStopButton.layer.masksToBounds = true
     }
     
+    private func passwordNotCracked() {
+        crackedPassLabel.text = "Password not cracked :("
+        possiblePassLabel.text = ""
+        activityIndicator.stopAnimating()
+    }
+    
+    private func breakingPassword() {
+        activityIndicator.startAnimating()
+        crackedPassLabel.text = ""
+    }
+    
+    private func passwordCracked() {
+        passField.isSecureTextEntry = false
+        isCrackButton = true
+        activityIndicator.stopAnimating()
+        possiblePassLabel.text = ""
+    }
+    
     func bruteForce(passwordToUnlock: String) {
         let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
         
         var password: String = ""
-
+        
         let concurrentQueue = DispatchQueue(label: "concurrentQueue", attributes: .concurrent)
         let mainQueue = DispatchQueue.main
         
+        guard !isPassCracked else { return crackedPassLabel.text = "Password already cracked..." }
+        
         concurrentQueue.async {
             while password != passwordToUnlock {
-                password = self.passwordGuessing.generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
+                if self.isBreaking {
+                    password = self.passwordGuessing.generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
+                } else {
+                    mainQueue.async {
+                        self.passwordNotCracked()
+                    }
+                    return
+                }
                 mainQueue.async {
-                    self.activityIndicator.startAnimating()
+                    self.breakingPassword()
                     self.possiblePassLabel.text = password
                 }
                 print(password)
             }
             mainQueue.async {
-                self.passField.isSecureTextEntry = false
-                self.isCrackButton = true
-                self.activityIndicator.stopAnimating()
-                self.possiblePassLabel.text = ""
-                self.crackedPassLabel.text = "Catched: \(password)"
+                self.passwordCracked()
+                self.crackedPassLabel.text = "Catched! \(password)"
             }
+            self.isPassCracked = true
+            print("Вломанный пароль: \(password)")
         }
     }
 }
