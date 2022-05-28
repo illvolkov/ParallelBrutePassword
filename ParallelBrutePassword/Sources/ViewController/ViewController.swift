@@ -143,7 +143,7 @@ class ViewController: UIViewController {
     }
     
     func bruteForce(passwordToUnlock: String) {
-        let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
+        let allowedCharacters: [String] = String().printable.map { String($0) }
         
         var password: String = ""
         
@@ -155,7 +155,7 @@ class ViewController: UIViewController {
         concurrentQueue.async {
             while password != passwordToUnlock {
                 if self.isBreaking {
-                    password = self.passwordGuessing.generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
+                    password = self.passwordGuessing.generateBruteForce(password, fromArray: allowedCharacters)
                 } else {
                     mainQueue.async {
                         self.passwordNotCracked()
@@ -173,7 +173,7 @@ class ViewController: UIViewController {
                 self.crackedPassLabel.text = "Catched! \(password)"
             }
             self.isPassCracked = true
-            print("Вломанный пароль: \(password)")
+            print("Взломанный пароль: \(password)")
         }
     }
 }
