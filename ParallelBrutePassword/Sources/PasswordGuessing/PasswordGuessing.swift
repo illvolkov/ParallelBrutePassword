@@ -7,7 +7,7 @@
 
 
 struct PasswordGuessing {
-    
+        
     func indexOf(character: Character, _ array: [String]) -> Int {
         return array.firstIndex(of: String(character))!
     }
@@ -31,18 +31,5 @@ struct PasswordGuessing {
         }
 
         return str
-    }
-    
-    func bruteForce(passwordToUnlock: String) {
-        let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
-        
-        var password: String = ""
-        
-        while password != passwordToUnlock {
-            password = generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
-            print(password)
-        }
-        
-        print(password)
     }
 }

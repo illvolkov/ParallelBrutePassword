@@ -15,6 +15,7 @@
 		046D957428414D8800117101 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046D957228414D8800117101 /* LaunchScreen.storyboard */; };
 		046D9583284159BC00117101 /* PasswordGuessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D9582284159BC00117101 /* PasswordGuessing.swift */; };
 		046D958628415BAC00117101 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D958528415BAC00117101 /* String+Extension.swift */; };
+		046D9589284242E600117101 /* Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D9588284242E600117101 /* Password.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		046D957528414D8800117101 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		046D9582284159BC00117101 /* PasswordGuessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGuessing.swift; sourceTree = "<group>"; };
 		046D958528415BAC00117101 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		046D9588284242E600117101 /* Password.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Password.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				046D957C28414FAD00117101 /* App */,
 				046D957E2841500000117101 /* ViewController */,
 				046D95812841597600117101 /* PasswordGuessing */,
+				046D9587284242BF00117101 /* GeneratePassword */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -119,6 +122,14 @@
 				046D958528415BAC00117101 /* String+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		046D9587284242BF00117101 /* GeneratePassword */ = {
+			isa = PBXGroup;
+			children = (
+				046D9588284242E600117101 /* Password.swift */,
+			);
+			path = GeneratePassword;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046D956C28414D8500117101 /* ViewController.swift in Sources */,
+				046D9589284242E600117101 /* Password.swift in Sources */,
 				046D9583284159BC00117101 /* PasswordGuessing.swift in Sources */,
 				046D956828414D8500117101 /* AppDelegate.swift in Sources */,
 				046D958628415BAC00117101 /* String+Extension.swift in Sources */,

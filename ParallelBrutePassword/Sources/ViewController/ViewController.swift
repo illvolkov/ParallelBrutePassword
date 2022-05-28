@@ -46,11 +46,13 @@ class ViewController: UIViewController {
                 crackStopButton.setTitle("Crack", for: .normal)
             } else {
                 crackStopButton.setTitle("Stop", for: .normal)
+                bruteForce(passwordToUnlock: passField.text ?? "")
             }
         }
     }
     
     private let passwordGuessing = PasswordGuessing()
+    private let password = Password()
     
     //MARK: - Lifecycle
     
@@ -58,8 +60,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        passwordGuessing.bruteForce(passwordToUnlock: "1!gr")
-        
     }
     
     //MARK: - Settings
@@ -78,12 +78,23 @@ class ViewController: UIViewController {
     @IBAction func hideKeyboard(_ sender: Any) {
         passField.resignFirstResponder()
     }
+    
     @IBAction func changeCrackStopButtonState(_ sender: Any) {
-        isCrackButton.toggle()
+        if !(passField.text?.isEmpty ?? false) {
+            isCrackButton.toggle()
+        } else {
+            crackedPassLabel.text = "Введите пароль"
+        }
+    }
+    
+    @IBAction func pushPassToPassField(_ sender: Any) {
+        passField.text = password.generateRandomPass()
+        print("Сгенерированный пароль: \(passField.text ?? "")")
     }
     
     
     //MARK: - Functions
+    
     private func changeViewsColor(to color: UIColor) {
         viewColorButton.tintColor = color
         possiblePassLabel.textColor = color
@@ -91,6 +102,7 @@ class ViewController: UIViewController {
         generatePassButton.backgroundColor = color
         crackStopButton.backgroundColor = color
         doneButton.tintColor = color
+        activityIndicator.color = color
     }
     
     private func setCornerRadiusForView( _ corner: CGFloat) {
@@ -102,5 +114,32 @@ class ViewController: UIViewController {
         
         crackStopButton.layer.cornerRadius = corner
         crackStopButton.layer.masksToBounds = true
+    }
+    
+    func bruteForce(passwordToUnlock: String) {
+        let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
+        
+        var password: String = ""
+
+        let concurrentQueue = DispatchQueue(label: "concurrentQueue", attributes: .concurrent)
+        let mainQueue = DispatchQueue.main
+        
+        concurrentQueue.async {
+            while password != passwordToUnlock {
+                password = self.passwordGuessing.generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
+                mainQueue.async {
+                    self.activityIndicator.startAnimating()
+                    self.possiblePassLabel.text = password
+                }
+                print(password)
+            }
+            mainQueue.async {
+                self.passField.isSecureTextEntry = false
+                self.isCrackButton = true
+                self.activityIndicator.stopAnimating()
+                self.possiblePassLabel.text = ""
+                self.crackedPassLabel.text = "Catched: \(password)"
+            }
+        }
     }
 }
