@@ -6,10 +6,10 @@
 //
 
 extension String {
-    var digits: String { return "0123456789" }
-    var lowercase: String { return "abcdefghijklmnopqrstuvwxyz" }
-    var uppercase: String { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ" }
-    var punctuation: String { return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~" }
+    var digits: String { return Strings.digits }
+    var lowercase: String { return Strings.lowercase }
+    var uppercase: String { return Strings.uppercase }
+    var punctuation: String { return Strings.punctuation }
     var letters: String { return lowercase + uppercase }
     var printable: String { return digits + letters + punctuation }
     

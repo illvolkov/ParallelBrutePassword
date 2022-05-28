@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CrackController: UIViewController {
     
     //MARK: - Outlets
     
@@ -40,6 +40,7 @@ class ViewController: UIViewController {
             }
         }
     }
+    
     //Флаг говорящий о том что идет взлом или нет
     private var isBreaking = true
     
@@ -50,10 +51,10 @@ class ViewController: UIViewController {
     private var isCrackButton: Bool = true {
         didSet {
             if isCrackButton {
-                self.crackStopButton.setTitle("Crack", for: .normal)
+                self.crackStopButton.setTitle(Strings.crackButtonTitle, for: .normal)
                 isBreaking = false
             } else {
-                crackStopButton.setTitle("Stop", for: .normal)
+                crackStopButton.setTitle(Strings.stopButtonTitle, for: .normal)
                 bruteForce(passwordToUnlock: passField.text ?? "")
                 isBreaking = true
             }
@@ -74,7 +75,7 @@ class ViewController: UIViewController {
     //MARK: - Settings
     
     private func setupView() {
-        setCornerRadiusForView(10)
+        setCornerRadiusForView(Sizes.cornerRadius10)
         passField.isSecureTextEntry = true
     }
     
@@ -91,20 +92,20 @@ class ViewController: UIViewController {
     @IBAction func changeCrackStopButtonState(_ sender: Any) {
         
         //Если пароль взломан то взламывать уже нечего
-        guard !isPassCracked else { return crackedPassLabel.text = "Password already cracked..." }
+        guard !isPassCracked else { return crackedPassLabel.text = Strings.alreadyCrackedTitle }
         
         //Если passField пустой то взламывать тоже нечего
         if !(passField.text?.isEmpty ?? false) {
             isCrackButton.toggle()
         } else {
-            crackedPassLabel.text = "C'mon, enter password!"
+            crackedPassLabel.text = Strings.enterPassTitle
         }
     }
     
     //Сгенерированный пароль отправляется в passField
     @IBAction func pushPassToPassField(_ sender: Any) {
         passField.text = password.generateRandomPass()
-        print("Сгенерированный пароль: \(passField.text ?? "")")
+        print("\(Strings.generatedPassTitle) \(passField.text ?? "")")
     }
     
     
@@ -121,7 +122,7 @@ class ViewController: UIViewController {
     }
     
     private func setCornerRadiusForView( _ corner: CGFloat) {
-        hackMeImage.layer.cornerRadius = corner * 5
+        hackMeImage.layer.cornerRadius = corner * Sizes.multiplierCornerRadius
         hackMeImage.layer.masksToBounds = true
         
         generatePassButton.layer.cornerRadius = corner
@@ -132,7 +133,7 @@ class ViewController: UIViewController {
     }
     
     private func passwordNotCracked() {
-        crackedPassLabel.text = "Password not cracked :("
+        crackedPassLabel.text = Strings.notCrackedTitle
         possiblePassLabel.text = ""
         activityIndicator.stopAnimating()
     }
@@ -154,10 +155,10 @@ class ViewController: UIViewController {
         
         var password: String = ""
         
-        let concurrentQueue = DispatchQueue(label: "concurrentQueue", attributes: .concurrent)
+        let concurrentQueue = DispatchQueue(label: Strings.concurrentLabel, attributes: .concurrent)
         let mainQueue = DispatchQueue.main
         
-        guard !isPassCracked else { return crackedPassLabel.text = "Password already cracked..." }
+        guard !isPassCracked else { return crackedPassLabel.text = Strings.alreadyCrackedTitle }
         
         concurrentQueue.async {
             while password != passwordToUnlock {
@@ -179,10 +180,10 @@ class ViewController: UIViewController {
             }
             mainQueue.async {
                 self.passwordCracked()
-                self.crackedPassLabel.text = "Catched! \(password)"
+                self.crackedPassLabel.text = "\(Strings.catchedTitle) \(password)"
             }
             self.isPassCracked = true
-            print("Взломанный пароль: \(password)")
+            print("\(Strings.crackedPassTitle) \(password)")
         }
     }
 }

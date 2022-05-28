@@ -9,7 +9,7 @@ struct Password {
     
     func generateRandomPass() -> String {
         let lenght = 4
-        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let letters = Strings.letters
         let randomPass = String((0..<lenght).compactMap { _ in letters.randomElement() })
         return randomPass
     }
