@@ -53,10 +53,12 @@ class CrackController: UIViewController {
             if isCrackButton {
                 self.crackStopButton.setTitle(Strings.crackButtonTitle, for: .normal)
                 isBreaking = false
+                passField.isEnabled = true
             } else {
                 crackStopButton.setTitle(Strings.stopButtonTitle, for: .normal)
                 bruteForce(passwordToUnlock: passField.text ?? "")
                 isBreaking = true
+                passField.isEnabled = false
             }
         }
     }
