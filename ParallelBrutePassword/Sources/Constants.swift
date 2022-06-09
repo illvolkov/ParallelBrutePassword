@@ -17,8 +17,8 @@ enum Strings {
     static let notCrackedTitle: String = "Password not cracked :("
     static let concurrentLabel: String = "concurrentQueue"
     static let catchedTitle: String = "Catched!"
-    static let crackedPassTitle: String = "Взломанный пароль:"
-    static let generatedPassTitle: String = "Сгенерированный пароль:"
+    static let crackedPassTitle: String = "Сracked password:"
+    static let generatedPassTitle: String = "Generated password:"
     
     //MARK: - Password
     static let letters: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

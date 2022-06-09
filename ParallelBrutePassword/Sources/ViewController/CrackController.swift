@@ -24,7 +24,7 @@ class CrackController: UIViewController {
     
     //MARK: - Properties
     
-    //Смена цвета вьюшек в зависимости от цвета супервью
+    //Change the color of the subview depending on the color of the view
     private var isBlack: Bool = false {
         didSet {
             if isBlack {
@@ -41,13 +41,13 @@ class CrackController: UIViewController {
         }
     }
     
-    //Флаг говорящий о том что идет взлом или нет
+    //Flag indicating whether hacking is in progress or not
     private var isBreaking = true
     
-    //Флаг говорящий о том что взломан пароль или нет
+    //Flag indicating that the password has been cracked or not
     private var isPassCracked = false
     
-    //Флаг конфигурирующий кнопку Crack/Stop
+    //Flag configuring the Crack/Stop button
     private var isCrackButton: Bool = true {
         didSet {
             if isCrackButton {
@@ -59,6 +59,7 @@ class CrackController: UIViewController {
                 crackStopButton.setTitle(Strings.stopButtonTitle, for: .normal)
                 bruteForce(passwordToUnlock: passField.text ?? "")
                 isBreaking = true
+                isPassCracked = false
                 passField.isEnabled = false
                 generatePassButton.isUserInteractionEnabled = false
             }
@@ -76,11 +77,20 @@ class CrackController: UIViewController {
         setupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification , object:nil)
+    }
+    
+    @objc func keyBoardWillShow(notification: NSNotification) {
+        passField.isSecureTextEntry = true
+    }
+    
     //MARK: - Settings
     
     private func setupView() {
         setCornerRadiusForView(Sizes.cornerRadius10)
-        passField.isSecureTextEntry = true
     }
     
     //MARK: - Actions
@@ -95,10 +105,7 @@ class CrackController: UIViewController {
     
     @IBAction func changeCrackStopButtonState(_ sender: Any) {
         
-        //Если пароль взломан то взламывать уже нечего
-        guard !isPassCracked else { return crackedPassLabel.text = Strings.alreadyCrackedTitle }
-        
-        //Если passField пустой то взламывать тоже нечего
+        //If passField is empty, then there is nothing to hack either
         if !(passField.text?.isEmpty ?? false) {
             isCrackButton.toggle()
         } else {
@@ -106,8 +113,9 @@ class CrackController: UIViewController {
         }
     }
     
-    //Сгенерированный пароль отправляется в passField
+    //The generated password is sent to passField
     @IBAction func pushPassToPassField(_ sender: Any) {
+        passField.isSecureTextEntry = true
         passField.text = password.generateRandomPass()
         print("\(Strings.generatedPassTitle) \(passField.text ?? "")")
     }
@@ -153,38 +161,40 @@ class CrackController: UIViewController {
         activityIndicator.stopAnimating()
         possiblePassLabel.text = ""
     }
+        
+    private func hackStateChange(with password: String) {
+        
+        if !isPassCracked {
+            breakingPassword()
+            possiblePassLabel.text = password
+        } else {
+            passwordCracked()
+            crackedPassLabel.text = "\(Strings.catchedTitle) \(password)"
+        }
+    }
     
-    func bruteForce(passwordToUnlock: String) {
+    private func bruteForce(passwordToUnlock: String) {
         let allowedCharacters: [String] = String().printable.map { String($0) }
         
         var password: String = ""
         
-        let concurrentQueue = DispatchQueue(label: Strings.concurrentLabel, attributes: .concurrent)
-        let mainQueue = DispatchQueue.main
+        let hackQueue = DispatchQueue(label: "hackQueue")
         
-        guard !isPassCracked else { return crackedPassLabel.text = Strings.alreadyCrackedTitle }
-        
-        concurrentQueue.async {
+        hackQueue.async {
             while password != passwordToUnlock {
                 
-                //Взлом или остановка взлома
-                if self.isBreaking {
-                    password = self.passwordGuessing.generateBruteForce(password, fromArray: allowedCharacters)
-                } else {
-                    mainQueue.async {
+                guard self.isBreaking && !self.isPassCracked else {
+                    DispatchQueue.main.async {
                         self.passwordNotCracked()
                     }
                     return
                 }
-                mainQueue.async {
-                    self.breakingPassword()
-                    self.possiblePassLabel.text = password
-                }
+                
+                password = self.passwordGuessing.generateBruteForce(password, fromArray: allowedCharacters)
                 print(password)
-            }
-            mainQueue.async {
-                self.passwordCracked()
-                self.crackedPassLabel.text = "\(Strings.catchedTitle) \(password)"
+                DispatchQueue.main.async {
+                    self.hackStateChange(with: password)
+                }
             }
             self.isPassCracked = true
             print("\(Strings.crackedPassTitle) \(password)")
